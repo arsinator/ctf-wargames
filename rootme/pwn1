@@ -236,7 +236,7 @@ a
 -2
 a
 a
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAABCDAAAAAAAAAAAAAAAAAAAAAAA
 -16
 a
 a
@@ -267,3 +267,4 @@ a
 -6
 a
 a
+get string in buffer and jump to 0xABCD
