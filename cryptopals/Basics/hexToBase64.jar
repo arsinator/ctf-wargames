@@ -1,0 +1,27 @@
+import java.io.*;
+import java.util.Base64 ;
+public class hexToBase64 {
+
+   public static String baseSF(String a){
+      char[] tempCharArray = new char[2];
+      String b="";
+      int i = 0;
+      int len = a.length();
+      while(i < len){
+         tempCharArray[0] =  a.charAt(i);
+         tempCharArray[1] = a.charAt(i+1);
+         String hexx = "" + tempCharArray[0] + tempCharArray[1];
+         long c = Long.parseLong(hexx, 16);
+         b += Character.toString((char) c);
+         i=i+2;
+      }
+//      System.out.print(b);
+      byte[] encodedBytes = Base64.getEncoder().encode(b.getBytes());
+      return new String(encodedBytes);
+   }
+
+   public static void main(String args[]) throws IOException {
+      System.out.print(baseSF("49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d"));
+      
+   }
+}
