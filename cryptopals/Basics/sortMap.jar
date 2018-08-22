@@ -1,0 +1,31 @@
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.TreeMap;
+
+public class sortMap {
+    public static TreeMap<Character, Integer> sort(HashMap<Character, Integer> mapd){
+        Comparator<Character> comparator = new ValueComparator(mapd);
+        
+        TreeMap<Character, Integer> result = new TreeMap<Character, Integer>(comparator);
+        result.putAll(mapd);
+        return result;
+    }
+}
+
+class ValueComparator implements Comparator<Character>{
+
+    HashMap<Character, Integer> map = new HashMap<Character, Integer>();
+
+    public ValueComparator(HashMap<Character, Integer> map){
+        this.map.putAll(map);
+    }
+
+    @Override
+    public int compare(Character s1, Character s2) {
+        if(map.get(s1) >= map.get(s2)){
+            return -1;
+        }else{
+            return 1;
+        }
+    }
+}
