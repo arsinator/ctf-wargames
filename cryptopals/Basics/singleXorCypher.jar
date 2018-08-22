@@ -6,8 +6,11 @@ public class singleXorCypher {
     private static HashMap<Character, Integer> mapd = new HashMap<Character, Integer>();
     private static Boolean check(String f){
         for(int i=0; i< f.length();i++){
-            if(f.charAt(i)>126 || f.charAt(i) < 32)
+            if(f.charAt(i)>126 || f.charAt(i) < 32){
+            if(f.charAt(i) == '\n')
+                    continue;
                 return false;
+                }
         }
         return true;
     }
