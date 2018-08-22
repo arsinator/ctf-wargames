@@ -1,0 +1,16 @@
+import java.io.IOException;
+
+public class fixedXor {
+    public static String xor(String a,String d){
+        String b = hexTo64.hexDecode(a);
+        String e = hexTo64.hexDecode(d);
+        char[] tempCharArray = new char[b.length()];
+        for (int i = 0; i < b.length();i++){
+            tempCharArray[i] = (char)((int)b.charAt(i) ^ (int)e.charAt(i));
+        }
+        return new String(tempCharArray);
+    }
+    public static void main(String args[]) throws IOException {
+        System.out.print(xor("1c0111001f010100061a024b53535009181c","686974207468652062756c6c277320657965"));
+    }
+}
