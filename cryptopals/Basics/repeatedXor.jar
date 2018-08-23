@@ -1,0 +1,9 @@
+import java.io.IOException;
+
+public class repeatedXor {
+    public static  void main(String args[]) throws IOException {
+
+        System.out.print(hexTo64.hexEncode(fixedXor.xor("Burning 'em, if you ain't quick and nimble","ICE")));
+//        System.out.println(mapd.get("a"));
+    }
+}
