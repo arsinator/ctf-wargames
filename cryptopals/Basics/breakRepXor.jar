@@ -1,0 +1,75 @@
+import java.io.*;
+import java.util.Base64;
+
+public class breakRepXor {
+    private static int countSetBits(int n)
+    {
+        int count = 0;
+        while (n > 0)
+        {
+            count += n & 1;
+            n >>= 1;
+        }
+        return count;
+    }
+    private static Integer hammingDist(String a,String b){
+        int diffBits=0;
+        for(int i=0; i< a.length();i++){
+            diffBits+=countSetBits((int)a.charAt(i)^(int)b.charAt(i));
+        }
+        return diffBits;
+    }
+    public static void main(String args[]) throws IOException {
+        FileInputStream fstream = new FileInputStream("/Users/napster/IdeaProjects/first/src/file.txt");
+        DataInputStream in = new DataInputStream(fstream);
+        BufferedReader br = new BufferedReader(new InputStreamReader(in));
+        String strLine;
+        String allLine="";
+        for(int i=0;i<=256;i++){
+            singleXorCypher.ledu += (char)i ;
+        }
+        while ((strLine = br.readLine()) != null)   {
+            // Print the content on the console
+            allLine += strLine;
+        }
+//        byte[] encodedBytes = Base64.getEncoder().encode("Test".getBytes());
+//        System.out.println("encodedBytes " + new String(encodedBytes));
+        byte[] decodedBytes = Base64.getDecoder().decode(allLine);
+
+        allLine = new String(decodedBytes);
+        double q,w,keylen1,keylen2; q=w=keylen1=keylen2=allLine.length(); int keyLen=0;
+        for (int i =40; i > 0; i--){
+            int j = hammingDist(allLine.substring(0,i),allLine.substring(i,i*2));
+            j += hammingDist(allLine.substring(i,i*2),allLine.substring(i*2,i*3));
+            j += hammingDist(allLine.substring(i*2,i*3),allLine.substring(i*3,i*4));
+            j += hammingDist(allLine.substring(i*3,i*4),allLine.substring(i*4,i*5));
+            q = (double) j/(double) i*4;
+//            System.out.println("Key length "+i+" normal "+q);
+            if(q<w) {
+                keylen2=keylen1;
+                keylen1=keyLen;
+                keyLen = i;
+                w = q;
+            }
+
+        }
+
+        System.out.println(" Possible key length = "+keyLen +" , " + keylen1 + " , " + keylen2);
+        String block="";
+        String key="";
+        keyLen=29; // For example
+        for (int i = 0 ; i< keyLen; i++){
+            block = "";
+
+            for (int j = 0; j < allLine.length()/keyLen ;j++){
+
+                block += allLine.charAt(j*keyLen+i);
+            }
+//            System.out.println(block);
+            key += singleXorCypher.cyph(block, Boolean.FALSE);
+            System.out.println("**************************End of block**************************");
+        }
+        System.out.println(key);
+        System.out.println(fixedXor.xor(allLine,key));
+    }
+}
