@@ -1,0 +1,51 @@
+import java.io.*;
+import javax.crypto.Cipher;
+import java.security.*;
+import java.util.Base64;
+import java.security.spec.InvalidParameterSpecException;
+import javax.crypto.*;
+import javax.crypto.spec.*;
+
+public class aes {
+    public static String decrypt(byte[] value, String password) throws NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, UnsupportedEncodingException {
+//        String value = hexTo64.hexDecode(valuee);
+
+//        System.out.println(value.length);
+//        for (int i =0;i< value.length; i++)
+//            System.out.println(value[i]);
+        SecretKey key = new SecretKeySpec(password.getBytes("UTF-8"), "AES");
+        Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding", "SunJCE");
+        cipher.init(Cipher.DECRYPT_MODE, key);
+        byte[] decrypted = cipher.doFinal(value);
+        return new String(decrypted, "UTF-8");
+    }
+
+    public static byte[] encrypt(String value, String password ) throws IOException, NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, InvalidParameterSpecException {
+        /* Encrypt the message. */
+
+        SecretKey secret = new SecretKeySpec(password.getBytes("UTF-8"), "AES");
+        Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding", "SunJCE");
+        cipher.init(Cipher.ENCRYPT_MODE, secret);
+        byte[] encrypted = cipher.doFinal(value.getBytes("UTF-8"));
+//        return hexTo64.hexEncode(new String(encrypted));
+        return encrypted;
+//        byte[] iv = params.getParameterSpec(IvParameterSpec.class).getIV();
+//        byte[] ciphertext = cipher.doFinal("Hello, World!".getBytes("UTF-8"));
+    }
+
+    public static void main(String args[]) throws IOException, NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, InvalidParameterSpecException  {
+
+        FileInputStream fstream = new FileInputStream("/Users/napster/IdeaProjects/first/src/file.txt");
+        DataInputStream in = new DataInputStream(fstream);
+        BufferedReader br = new BufferedReader(new InputStreamReader(in));
+        String strLine;
+        String base64str ="";
+        while ((strLine = br.readLine()) != null)   {
+            // Print the content on the console
+            base64str += strLine;
+        }
+        byte[] decodedBytes = Base64.getDecoder().decode(base64str);
+        System.out.println(decodedBytes.length);
+        System.out.println(decrypt(decodedBytes,"YELLOW SUBMARINE"));
+    }
+}
