@@ -1,0 +1,49 @@
+import java.io.*;
+
+public class detectEcb {
+
+    public static Integer find(String str, String findStr){
+        int lastIndex = 0;
+        int count = 0;
+
+        while(lastIndex != -1){
+
+            lastIndex = str.indexOf(findStr,lastIndex);
+
+            if(lastIndex != -1){
+                count ++;
+                lastIndex += findStr.length();
+            }
+        }
+
+        return count;
+    }
+
+    public static void main(String args[]) throws IOException {
+
+        FileInputStream fstream = new FileInputStream("/Users/napster/IdeaProjects/first/src/file.txt");
+        DataInputStream in = new DataInputStream(fstream);
+        BufferedReader br = new BufferedReader(new InputStreamReader(in));
+        String strLine;
+        int j=0; int k; int h=0; int line=0;int linewin=0;
+        while ((strLine = br.readLine()) != null)   {
+            line ++;
+            j=0;
+            for (int i=0;i< strLine.length()/16;i++){
+
+                k = find(strLine,strLine.substring(i*16,(i+1)*16));
+                k=k-1;
+                if(k!=0)
+                    j+=k;
+            }
+
+            if(j>h) {
+                linewin = line;
+                System.out.println(strLine);
+                System.out.println(j);
+                h = j;
+            }
+        }
+        System.out.println(linewin);
+    }
+}
