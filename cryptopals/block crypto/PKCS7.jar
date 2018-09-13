@@ -1,0 +1,17 @@
+import java.io.IOException;
+
+public class PKCS7 {
+    public static String addPad(String a, int blockSize){
+        int ost = a.length()%blockSize;
+        int b = blockSize - ost ;
+        System.out.println(b);
+        for (int i = 0; i < b ; i++){
+            a += (char)b;
+        }
+        return a;
+    }
+    public static void main(String args[]) throws IOException {
+
+        System.out.println(addPad("YELLOW SUBMARINE", 20));
+    }
+}
