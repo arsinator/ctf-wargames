@@ -1,4 +1,4 @@
-import aesCbc
+import CBCmodeAes
 from random import randint
 
 
@@ -24,15 +24,15 @@ def generateRandomStr(len):
 
 def randEncr(text):
     p = randint(5, 10)
-    text = bytes(aesCbc.pk7(generateRandomStr(p)+text+generateRandomStr(p),16))
+    text = bytes(CBCmodeAes.pk7(generateRandomStr(p)+text+generateRandomStr(p),16))
     key = bytes(generateRandomStr(16))
 
     if randint(0, 1):
-        result = aesCbc.aesEnc(text,key)
+        result = CBCmodeAes.aesEnc(text,key)
         print("cbc")
     else :
         IV = generateRandomStr(16)
-        result = aesCbc.aesCbcEnc(text,key,IV)
+        result =CBCmodeAes.aesCbcEnc(text,key,IV)
         print("ebc")
     return result
 

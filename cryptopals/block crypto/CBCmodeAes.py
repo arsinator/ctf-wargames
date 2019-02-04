@@ -36,7 +36,7 @@ def aesCbcDec(text,key,iv):
         iv = text[i:16+i]
     return result
 
-a = aesCbcEnc(bytes("abcdabcd12345678","utf8"),"YELLOW SUBMARINE",bytes("\x00"*16,"utf8"))
+"""a = aesCbcEnc(bytes("abcdabcd12345678","utf8"),"YELLOW SUBMARINE",bytes("\x00"*16,"utf8"))
 print(base64.b16encode(bytes(a)))
 b = aesCbcDec(a,"YELLOW SUBMARINE",bytes("\x00"*16,"utf8"))
 print(b)
@@ -49,3 +49,4 @@ decodedLine = base64.b64decode(bytes(allLine,"utf8"))
 decodedLine = pk7(decodedLine,16)
 
 print(aesCbcDec(decodedLine, "YELLOW SUBMARINE",bytes("\x00"*16,"utf8")))
+"""
