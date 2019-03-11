@@ -2,8 +2,15 @@
 import base64
 from Crypto.Cipher import AES
 
+def unPad(a):
+	if a[-1]>16:
+		return a
+	return a[0:-a[-1]]
+
 def pk7(a,b):
     c = len(a)%b
+    if c == 0:
+       return a
     d = b - c
     return a + bytearray(chr(d)*d,"utf8")
 
